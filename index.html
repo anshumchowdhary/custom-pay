@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom-Pay — Sticker QR for UPI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="logo">
+    <span class="logo-mark">✦</span>
+    <span class="logo-text">Custom‑Pay</span>
+  </div>
+  <p class="tag">sticker‑grade UPI QR codes, made in seconds</p>
+</header>
+
+<main class="stage">
+
+  <!-- ============ FORM PANEL ============ -->
+  <section class="panel form-panel" aria-label="QR details form">
+    <div class="panel-head">
+      <span class="step-dot">01</span>
+      <h2>Fill the deets</h2>
+    </div>
+
+    <label class="field">
+      <span class="field-label">UPI ID <em>(VPA)</em></span>
+      <input id="upiId" type="text" placeholder="yourname@okhdfcbank" autocomplete="off">
+      <span class="field-hint" id="upiHint">e.g. healingchoi@okicici — works with every UPI app</span>
+    </label>
+
+    <label class="field">
+      <span class="field-label">Payee name</span>
+      <input id="payeeName" type="text" placeholder="Healing Choi" autocomplete="off" maxlength="40">
+    </label>
+
+    <div class="field">
+      <span class="field-label">Amount</span>
+      <div class="amount-toggle" role="tablist">
+        <button type="button" class="toggle-btn is-active" data-mode="open" role="tab">Any amount</button>
+        <button type="button" class="toggle-btn" data-mode="fixed" role="tab">Fixed amount</button>
+      </div>
+      <input id="amount" type="number" min="1" step="1" placeholder="e.g. 499" class="amount-input is-hidden" inputmode="numeric">
+    </div>
+
+    <label class="field">
+      <span class="field-label">Note <em>(optional)</em></span>
+      <input id="note" type="text" placeholder="Commission — Sept batch" maxlength="50" autocomplete="off">
+    </label>
+
+    <div class="field">
+      <span class="field-label">Card title</span>
+      <input id="cardTitle" type="text" placeholder="SCAN TO PAY" maxlength="24">
+    </label>
+    </div>
+
+    <div class="panel-head second">
+      <span class="step-dot">02</span>
+      <h2>Pick a skin</h2>
+    </div>
+
+    <div class="theme-row" id="themeRow">
+      <button class="sticker-swatch" data-theme="healing" style="--sw-a:#0b0b0f;--sw-b:#7c5cfc;" aria-label="Healing Noir theme">
+        <span class="sw-face">◕‿◕</span>
+      </button>
+      <button class="sticker-swatch" data-theme="chrome" style="--sw-a:#8fb3ff;--sw-b:#eaf1ff;" aria-label="Chrome Pop theme">
+        <span class="sw-face">✦</span>
+      </button>
+      <button class="sticker-swatch" data-theme="mint" style="--sw-a:#0f3d33;--sw-b:#3fe8b3;" aria-label="Mint Static theme">
+        <span class="sw-face">﹡</span>
+      </button>
+      <button class="sticker-swatch" data-theme="candy" style="--sw-a:#2a0f22;--sw-b:#ff5fa2;" aria-label="Candy Rush theme">
+        <span class="sw-face">♡</span>
+      </button>
+    </div>
+
+    <p class="error-msg" id="errorMsg" role="alert"></p>
+
+    <button class="btn-generate" id="generateBtn">Generate my QR</button>
+  </section>
+
+  <!-- ============ PREVIEW PANEL ============ -->
+  <section class="panel preview-panel" aria-label="QR preview">
+    <div class="card-stage" id="cardStage">
+      <div class="holo-card" id="holoCard" data-theme="healing">
+
+        <div class="peel"></div>
+        <div class="shimmer"></div>
+
+        <div class="card-top">
+          <span class="card-title" id="cardTitleOut">SCAN TO PAY</span>
+          <span class="card-sub" id="cardSubOut">your name</span>
+        </div>
+
+        <div class="qr-frame">
+          <div class="corner c-tl"></div>
+          <div class="corner c-tr"></div>
+          <div class="corner c-bl"></div>
+          <div class="corner c-br"></div>
+          <div class="qr-well" id="qrWell">
+            <canvas id="qrCanvas" width="280" height="280"></canvas>
+            <div class="qr-placeholder" id="qrPlaceholder">
+              <span>✦</span>
+              <p>Your QR appears here</p>
+            </div>
+          </div>
+          <div class="center-charm" id="centerCharm">✦</div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="amt-pill" id="amtPill">Open amount</div>
+          <div class="mascot" aria-hidden="true">
+            <svg viewBox="0 0 120 100" class="mascot-svg">
+              <ellipse cx="60" cy="70" rx="46" ry="28" fill="var(--mascot-fill)"/>
+              <path d="M20 46 L34 8 L46 40 Z" fill="var(--mascot-fill)"/>
+              <path d="M100 46 L86 8 L74 40 Z" fill="var(--mascot-fill)"/>
+              <circle cx="40" cy="56" r="11" fill="var(--mascot-eye-bg)"/>
+              <circle cx="80" cy="56" r="11" fill="var(--mascot-eye-bg)"/>
+              <circle cx="41" cy="58" r="4" fill="var(--mascot-fill)"/>
+              <circle cx="81" cy="58" r="4" fill="var(--mascot-fill)"/>
+              <path d="M56 66 q4 4 8 0" stroke="var(--mascot-eye-bg)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="sparkle s1">✦</div>
+        <div class="sparkle s2">✧</div>
+        <div class="sparkle s3">✦</div>
+      </div>
+    </div>
+
+    <div class="preview-actions">
+      <button class="btn-secondary" id="downloadBtn" disabled>Download PNG</button>
+      <button class="btn-ghost" id="copyLinkBtn" disabled>Copy UPI link</button>
+    </div>
+    <p class="fineprint">Works with any UPI app · nothing leaves your browser</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>Custom‑Pay</span> · build your own payment sticker
+</footer>
+
+<script src="js/qrcode-local.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
