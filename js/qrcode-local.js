@@ -265,26 +265,26 @@
     setupTypeNumber(test) {
       const bits = bchTypeNumber(this.typeNumber);
       for (let i = 0; i < 18; i++) {
-        const mod = (!test && ((bits >> (17 - i)) & 1) === 1);
+        const mod = (!test && ((bits >> i) & 1) === 1);
         this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
       }
       for (let i = 0; i < 18; i++) {
-        const mod = (!test && ((bits >> (17 - i)) & 1) === 1);
+        const mod = (!test && ((bits >> i) & 1) === 1);
         this.modules[i % 3 + this.moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
       }
     }
     setupTypeInfo(test, maskPattern) {
       const data = (EC_FORMAT_BITS[this.ecLevel] << 3) | maskPattern;
       const bits = bchTypeInfo(data);
-      // Bit i of the 15-bit format string (0 = MSB, 14 = LSB) per ISO/IEC 18004 layout.
+      // Per ISO/IEC 18004: bit i (LSB-first, i=0..14) maps to fixed strip positions below.
       for (let i = 0; i < 15; i++) {
-        const mod = (!test && ((bits >> (14 - i)) & 1) === 1);
+        const mod = (!test && ((bits >> i) & 1) === 1);
         if (i < 6) this.modules[i][8] = mod;
         else if (i < 8) this.modules[i + 1][8] = mod;
         else this.modules[this.moduleCount - 15 + i][8] = mod;
       }
       for (let i = 0; i < 15; i++) {
-        const mod = (!test && ((bits >> (14 - i)) & 1) === 1);
+        const mod = (!test && ((bits >> i) & 1) === 1);
         if (i < 8) this.modules[8][this.moduleCount - i - 1] = mod;
         else if (i < 9) this.modules[8][15 - i - 1 + 1] = mod;
         else this.modules[8][15 - i - 1] = mod;
